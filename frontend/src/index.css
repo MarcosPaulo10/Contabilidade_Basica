@@ -1,0 +1,29 @@
+@import "tailwindcss";
+
+@layer base {
+  body {
+    @apply bg-gray-50 text-gray-800;
+  }
+}
+
+/* Custom styles for A4 sheet */
+.a4-sheet {
+  width: 21cm;
+  min-height: 29.7cm;
+  padding: 2cm;
+  margin: 1cm auto;
+  background: white;
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+}
+
+@media print {
+  body {
+    background: transparent;
+  }
+  .a4-sheet {
+    margin: 0;
+    box-shadow: none;
+    width: 100%;
+    min-height: auto;
+  }
+}

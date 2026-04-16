@@ -1,0 +1,62 @@
+CLASSIFICACAO DE CONTAS - BALANCO PATRIMONIAL
+
+GRUPO: ATIVO CIRCULANTE (Bens e direitos que giram em ate 12 meses)
+- Disponivel (Caixa/Bancos): Adicao | Exercicio
+- Duplicatas a Receber: Adicao | Exercicio
+- Estoque de Mercadorias: Adicao | Exercicio
+- Aplicacoes Financeiras de Curto Prazo: Adicao | Comum
+- Adiantamento a Fornecedores: Adicao | Comum
+- Impostos a Recuperar (ICMS/IPI): Adicao | Comum
+- Clientes / Notas Promissoras a Receber: Adicao | Comum
+
+GRUPO: ATIVO NAO CIRCULANTE - REALIZAVEL A LONGO PRAZO (Direitos acima de 12 meses)
+- Titulos a Receber (LP): Adicao | Exercicio
+- Emprestimos a Coligadas ou Socios: Adicao | Comum
+- Depositos Judiciais: Adicao | Comum
+
+GRUPO: ATIVO NAO CIRCULANTE - INVESTIMENTOS (Participacoes e bens que nao sao da operacao)
+- Acoes de Outras Cias / Participacoes Societarias: Adicao | Exercicio
+- Terrenos para Expansao (uso futuro): Adicao | Comum
+- Obras de Arte / Imoveis para Renda: Adicao | Comum
+
+GRUPO: ATIVO NAO CIRCULANTE - IMOBILIZADO (Bens fisicos usados na operacao)
+- Veiculos: Adicao | Exercicio
+- Maquinas e Equipamentos: Adicao | Exercicio
+- Moveis e Utensilios: Adicao | Exercicio
+- Predios e Edificacoes: Adicao | Comum
+- Terrenos em Uso: Adicao | Comum
+- Ferramentas: Adicao | Comum
+- (-) Depreciacao Acumulada: SUBTRACAO (Conta Redutora) | Exercicio
+
+GRUPO: ATIVO NAO CIRCULANTE - INTANGIVEL (Bens sem corpo fisico)
+- Marcas e Patentes: Adicao | Exercicio
+- Softwares e Licencas de Uso: Adicao | Comum
+- Direito de Uso de Linhas Telefonicas: Adicao | Comum
+- Goodwill (Agio por expectativa de lucro): Adicao | Comum
+
+GRUPO: PASSIVO CIRCULANTE (Obrigacoes e dividas de ate 12 meses)
+- Fornecedores: Adicao (Soma na divida) | Exercicio
+- Salarios a Pagar: Adicao (Soma na divida) | Exercicio
+- Impostos a Pagar: Adicao (Soma na divida) | Exercicio
+- Encargos a Pagar (FGTS/INSS): Adicao (Soma na divida) | Exercicio
+- Emprestimos Bancarios (CP): Adicao (Soma na divida) | Exercicio
+- Contas a Pagar / Despesas a Pagar: Adicao (Soma na divida) | Exercicio
+- Dividendos a Pagar aos Socios: Adicao (Soma na divida) | Comum
+- Adiantamento de Clientes: Adicao (Soma na divida) | Comum
+
+GRUPO: PASSIVO NAO CIRCULANTE (Obrigacoes acima de 12 meses)
+- Financiamentos Bancarios (LP): Adicao (Soma na divida) | Exercicio
+- Debentures a Pagar: Adicao (Soma na divida) | Comum
+- Provisoes para Riscos Fiscais/Trabalhistas: Adicao (Soma na divida) | Comum
+
+GRUPO: PATRIMONIO LIQUIDO (Recursos proprios dos socios)
+- Capital Social (Integralizado): Adicao | Exercicio
+- Reservas de Lucros: Adicao | Exercicio
+- Reservas de Capital: Adicao | Comum
+- (-) Prejuizos Acumulados: SUBTRACAO (Conta Redutora) | Comum
+- (-) Acoes em Tesouraria: SUBTRACAO (Conta Redutora) | Comum
+
+REGRA DE FECHAMENTO:
+TOTAL ATIVO = (Soma de todos os Ativos) - (Soma das Redutoras de Ativo)
+TOTAL PASSIVO E PL = (Soma de todos os Passivos e PL) - (Soma das Redutoras de PL)
+RESULTADO: O Ativo deve ser rigorosamente igual ao Passivo + PL.

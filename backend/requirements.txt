@@ -1,0 +1,5 @@
+Flask==3.0.3
+Flask-Cors==4.0.1
+Flask-SQLAlchemy
+SQLAlchemy
+# Bibliotecas nativas são usadas para exportação CSV para evitar erros de compilação

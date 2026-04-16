@@ -1,0 +1,78 @@
+Para construir essa tabela do zero, imagine que você está desenhando um grande retângulo dividido ao meio. O objetivo é criar um "espelho" onde o lado esquerdo (o que você tem) deve sempre somar o mesmo valor que o lado direito (quem financiou).
+
+Aqui está o roteiro passo a passo para desenhar e preencher essa estrutura:
+
+1. O Cabeçalho e a Estrutura Geral
+Título Principal: No topo, centralizado acima de tudo, escreva o nome da empresa (ex: BALANÇO PATRIMONIAL - ELDORADO S/A) e a data de referência (ex: Em 31/12/202X).
+
+Quantidade de Colunas: A tabela deve ter 4 colunas no total.
+
+Coluna 1: Descrição das contas do Ativo.
+
+Coluna 2: Valor das contas do Ativo.
+
+Coluna 3: Descrição das contas do Passivo e PL.
+
+Coluna 4: Valor das contas do Passivo e PL.
+
+Divisão Central: Desenhe uma linha vertical reforçada no meio da tabela para separar visualmente o lado esquerdo (Ativo) do lado direito (Passivo e PL).
+
+2. O Lado Esquerdo: ATIVO (Bens e Direitos)
+Nesta coluna, você listará o que a empresa possui, do mais fácil de virar dinheiro para o mais difícil.
+
+Título do Grupo: Escreva CIRCULANTE em negrito no topo da primeira coluna.
+
+Abaixo dele, liste as contas de curto prazo (Disponível, Estoque, Duplicatas).
+
+Ao final desse bloco, desenhe uma linha horizontal fina e escreva TOTAL DO CIRCULANTE, colocando a soma na coluna de valores.
+
+Título do Grupo: Escreva NÃO CIRCULANTE em negrito logo abaixo.
+
+Dentro deste grupo, crie sub-títulos para organizar:
+
+Realizável a Longo Prazo: (Títulos a receber após 1 ano).
+
+Investimentos: (Ações de outras empresas).
+
+Imobilizado: (Bens físicos como Veículos, Máquinas). Dica: Se houver Depreciação, coloque o valor entre parênteses para indicar que ele diminui o total desse grupo.
+
+Intangível: (Marcas e patentes).
+
+Subtotal: Ao final, escreva TOTAL DO NÃO CIRCULANTE e coloque a soma na coluna de valores.
+
+3. O Lado Direito: PASSIVO E PL (Dívidas e Capital Próprio)
+Nesta coluna, listamos as obrigações, das que vencem mais cedo para as mais demoradas.
+
+Título do Grupo: Escreva CIRCULANTE no topo da terceira coluna.
+
+Abaixo dele, liste as dívidas de curto prazo (Fornecedores, Salários, Impostos).
+
+Ao final, coloque a linha de TOTAL DO CIRCULANTE.
+
+Título do Grupo: Escreva NÃO CIRCULANTE abaixo.
+
+Aqui entram dívidas longas, como Financiamentos (LP).
+
+Ao final, coloque a linha de TOTAL DO NÃO CIRCULANTE.
+
+Título do Grupo: Escreva PATRIMÔNIO LÍQUIDO abaixo.
+
+Liste o Capital Social e as Reservas de Lucros.
+
+Ao final, coloque a linha de TOTAL DO P.L.
+
+4. O Fechamento (A Linha Final)
+Esta é a parte mais importante para a estética e a precisão da tabela:
+
+Linha de Totais: Desenhe uma linha horizontal dupla ou reforçada na base de toda a tabela.
+
+Lado Esquerdo: Escreva TOTAL ATIVO e coloque a soma final (a soma dos totais Circulante + Não Circulante).
+
+Lado Direito: Na mesma direção (mesma linha), escreva TOTAL PASSIVO E PL e coloque a soma final (Soma dos totais Circulante + Não Circulante + PL).
+
+Dicas de "Design" Contábil:
+Recuo (Indentação): Escreva os nomes dos grupos (CIRCULANTE) encostados na borda e dê um pequeno espaço (parágrafo) para o nome das contas (ex:    Estoque). Isso ajuda muito na leitura rápida.
+
+Alinhamento de Valores: Mantenha os números sempre alinhados à direita na coluna de valor.
+
+Simetria: Mesmo que um lado tenha mais contas que o outro, os totais finais (TOTAL ATIVO e TOTAL PASSIVO) devem ficar exatamente na mesma linha horizontal na base da tabela. Se um lado ficar mais curto, deixe o espaço em branco acima da linha de total.
