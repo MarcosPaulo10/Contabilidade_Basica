@@ -35,21 +35,21 @@ export default function BalancoView({ empresa, periodo, onBack }) {
   const ativoCirculante = getSubgrupo('Ativo', 'Circulante')
   const totalAC = calcTotal(ativoCirculante)
 
-  const realizavel = getSubgrupo('Ativo', 'Realizável a Longo Prazo')
-  const investimentos = getSubgrupo('Ativo', 'Investimentos')
-  const imobilizado = getSubgrupo('Ativo', 'Imobilizado')
-  const intangivel = getSubgrupo('Ativo', 'Intangível')
+  const realizavel = getSubgrupo('Ativo', 'Realizável a Longo Prazo - Não Circulante')
+  const investimentos = getSubgrupo('Ativo', 'Investimentos - Não Circulante')
+  const imobilizado = getSubgrupo('Ativo', 'Imobilizado - Não Circulante')
+  const intangivel = getSubgrupo('Ativo', 'Intangível - Não Circulante')
   
   const totalANC = calcTotal(realizavel) + calcTotal(investimentos) + calcTotal(imobilizado) + calcTotal(intangivel)
   const totalAtivo = totalAC + totalANC
 
-  const passivoCirculante = getSubgrupo('Passivo', 'Circulante')
+  const passivoCirculante = getSubgrupo('Passivo e PL', 'Circulante')
   const totalPC = calcTotal(passivoCirculante)
 
-  const passivoNaoCirculante = getSubgrupo('Passivo', 'Não Circulante')
-  const totalPNC = calcTotal(passivoNaoCirculante)
+  const exigivelLP = getSubgrupo('Passivo e PL', 'Exigível a Longo Prazo - Não Circulante')
+  const totalPNC = calcTotal(exigivelLP)
 
-  const patrimonioLiquido = getSubgrupo('Patrimônio Líquido', 'Patrimônio Líquido')
+  const patrimonioLiquido = getSubgrupo('Passivo e PL', 'Patrimônio Líquido')
   const totalPL = calcTotal(patrimonioLiquido)
 
   const totalPassivoEPL = totalPC + totalPNC + totalPL
@@ -159,8 +159,9 @@ export default function BalancoView({ empresa, periodo, onBack }) {
               </div>
 
               <h3 className="font-bold text-xs mt-4 mb-1">NÃO CIRCULANTE</h3>
-              {passivoNaoCirculante.map(l => (
-                <div key={l.id} className="flex justify-between pl-4 text-xs py-0.5">
+              {exigivelLP.length > 0 && <h4 className="italic text-xs pl-2">Exigível a Longo Prazo</h4>}
+              {exigivelLP.map(l => (
+                <div key={l.id} className="flex justify-between pl-6 text-xs py-0.5">
                   <span>{l.nome}</span>
                   <span>{formatMoney(l.valor)}</span>
                 </div>

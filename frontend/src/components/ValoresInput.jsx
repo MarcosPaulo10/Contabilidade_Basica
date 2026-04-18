@@ -15,6 +15,7 @@ export default function ValoresInput({ empresa, onViewBalanco, onBack }) {
   const [mostrarDropdown, setMostrarDropdown] = useState(false)
 
   const dropdownRef = useRef(null)
+  const valorInputRef = useRef(null)
 
   const API_URL = 'http://127.0.0.1:5000/api'
 
@@ -55,7 +56,8 @@ export default function ValoresInput({ empresa, onViewBalanco, onBack }) {
       const preenchidos = {}
       res.data.forEach(l => {
         if(l.conta_padrao_id) {
-          preenchidos[l.conta_padrao_id] = formatCurrency(Math.abs(l.valor).toString())
+          const centsStr = Math.abs(l.valor).toFixed(2).replace(/\D/g, '')
+          preenchidos[l.conta_padrao_id] = formatCurrency(centsStr)
         }
       })
       setLancamentos(preenchidos)
@@ -89,36 +91,15 @@ export default function ValoresInput({ empresa, onViewBalanco, onBack }) {
     }
   }
 
-  const handleRemoverConta = (contaId) => {
-      setLancamentos(prev => {
-          const novolanc = {...prev}
-          delete novolanc[contaId]
-          return novolanc
-      })
-  }
-
-  const handleAdicionarNaLista = () => {
-      if(!contaSelecionada || !valorInput) {
-          alert('Selecione uma conta e digite um valor válido.')
-          return
-      }
-      setLancamentos(prev => ({
-          ...prev,
-          [contaSelecionada.id]: valorInput
-      }))
-      setBusca('')
-      setContaSelecionada(null)
-      setValorInput('')
-  }
-
-  const handleSalvar = async () => {
-    setLoading(true)
+  const performSave = async (dados_atuais) => {
     try {
       const dados_limpos = {}
-      Object.keys(lancamentos).forEach(id => {
-        if(lancamentos[id]) {
-          const numStr = lancamentos[id].replace('R$', '').replace(/\./g, '').replace(',', '.').trim()
-          dados_limpos[id] = parseFloat(numStr)
+      Object.keys(dados_atuais).forEach(id => {
+        if(dados_atuais[id]) {
+          const digitsStr = String(dados_atuais[id]).replace(/\D/g, '')
+          if (digitsStr !== '') {
+            dados_limpos[id] = parseFloat(digitsStr) / 100
+          }
         }
       })
 
@@ -129,14 +110,43 @@ export default function ValoresInput({ empresa, onViewBalanco, onBack }) {
         valores: dados_limpos,
         novas_contas: [] 
       })
-      
-      onViewBalanco(parseInt(mes), parseInt(ano))
     } catch (error) {
-      console.error('Erro ao salvar:', error)
-      alert("Erro ao salvar os dados.")
-    } finally {
-      setLoading(false)
+      console.error('Erro no autosave:', error)
     }
+  }
+
+  const handleRemoverConta = async (contaId) => {
+      const novolanc = {...lancamentos}
+      delete novolanc[contaId]
+      setLancamentos(novolanc)
+      await performSave(novolanc)
+  }
+
+  const handleAdicionarNaLista = async () => {
+      if(!contaSelecionada || !valorInput) {
+          alert('Selecione uma conta e digite um valor válido.')
+          return
+      }
+      const novolanc = {
+          ...lancamentos,
+          [contaSelecionada.id]: valorInput
+      }
+      setLancamentos(novolanc)
+      setBusca('')
+      setContaSelecionada(null)
+      setValorInput('')
+      
+      await performSave(novolanc)
+  }
+
+  const handleKeyDown = (e) => {
+      if (e.key === 'Enter') {
+          handleAdicionarNaLista()
+      }
+  }
+
+  const handleViewBalanço = () => {
+      onViewBalanco(parseInt(mes), parseInt(ano))
   }
 
   const handleLimparTudo = async () => {
@@ -154,6 +164,19 @@ export default function ValoresInput({ empresa, onViewBalanco, onBack }) {
     }
   }
 
+  const handleEditarLancamento = (conta) => {
+    setContaSelecionada(conta)
+    setBusca(conta.nome)
+    setValorInput(lancamentos[conta.id])
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+    setTimeout(() => {
+        if(valorInputRef.current) {
+            valorInputRef.current.focus()
+            if(valorInputRef.current.select) valorInputRef.current.select()
+        }
+    }, 300)
+  }
+
   const contasFiltradas = contasPadrao.filter(c => 
     c.nome.toLowerCase().includes(busca.toLowerCase()) ||
     c.grupo.toLowerCase().includes(busca.toLowerCase())
@@ -163,7 +186,7 @@ export default function ValoresInput({ empresa, onViewBalanco, onBack }) {
   
   // Separando para visualização
   const ativosAdicionados = contasPadrao.filter(c => c.grupo === 'Ativo' && contasJaAdicionadasIds.includes(c.id))
-  const passivosPLAdicionados = contasPadrao.filter(c => (c.grupo === 'Passivo' || c.grupo === 'Patrimônio Líquido') && contasJaAdicionadasIds.includes(c.id))
+  const passivosPLAdicionados = contasPadrao.filter(c => c.grupo === 'Passivo e PL' && contasJaAdicionadasIds.includes(c.id))
 
   return (
     <div className="max-w-5xl mx-auto bg-white p-8 rounded-lg shadow-sm border border-slate-200">
@@ -238,10 +261,12 @@ export default function ValoresInput({ empresa, onViewBalanco, onBack }) {
                 <label className="block text-sm font-medium text-slate-600 mb-1">Valor do Saldo</label>
                 <input 
                     type="text" 
+                    ref={valorInputRef}
                     className="w-full border p-3 rounded-md shadow-sm outline-none focus:ring-2 focus:ring-blue-500 text-right"
                     placeholder="R$ 0,00"
                     value={valorInput}
                     onChange={handleValorInputChange}
+                    onKeyDown={handleKeyDown}
                     disabled={!contaSelecionada}
                 />
             </div>
@@ -289,7 +314,10 @@ export default function ValoresInput({ empresa, onViewBalanco, onBack }) {
                           </div>
                           <div className="flex items-center gap-3">
                               <span className="font-semibold text-slate-800 text-sm">{lancamentos[conta.id]}</span>
-                              <button onClick={() => handleRemoverConta(conta.id)} className="text-red-400 hover:text-red-600 font-bold px-2 py-1 bg-red-50 rounded opacity-0 group-hover:opacity-100 transition" title="Remover">&times;</button>
+                              <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition whitespace-nowrap">
+                                <button onClick={() => handleEditarLancamento(conta)} className="text-blue-500 hover:text-blue-700 bg-blue-50 px-2 rounded font-bold" title="Editar Valor">✏️</button>
+                                <button onClick={() => handleRemoverConta(conta.id)} className="text-red-400 hover:text-red-600 font-bold px-2 py-1 bg-red-50 rounded" title="Remover">&times;</button>
+                              </div>
                           </div>
                       </li>
                   ))}
@@ -312,7 +340,10 @@ export default function ValoresInput({ empresa, onViewBalanco, onBack }) {
                           </div>
                           <div className="flex items-center gap-3">
                               <span className="font-semibold text-slate-800 text-sm">{lancamentos[conta.id]}</span>
-                              <button onClick={() => handleRemoverConta(conta.id)} className="text-red-400 hover:text-red-600 font-bold px-2 py-1 bg-red-50 rounded opacity-0 group-hover:opacity-100 transition" title="Remover">&times;</button>
+                              <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition whitespace-nowrap">
+                                <button onClick={() => handleEditarLancamento(conta)} className="text-blue-500 hover:text-blue-700 bg-blue-50 px-2 rounded font-bold" title="Editar Valor">✏️</button>
+                                <button onClick={() => handleRemoverConta(conta.id)} className="text-red-400 hover:text-red-600 font-bold px-2 py-1 bg-red-50 rounded" title="Remover">&times;</button>
+                              </div>
                           </div>
                       </li>
                   ))}
@@ -329,11 +360,11 @@ export default function ValoresInput({ empresa, onViewBalanco, onBack }) {
           Limpar Todos Lançamentos
         </button>
         <button 
-          onClick={handleSalvar}
-          disabled={loading || contasJaAdicionadasIds.length === 0}
-          className="px-8 py-3 bg-slate-800 text-white rounded-md hover:bg-slate-700 transition font-bold disabled:opacity-50"
+          onClick={handleViewBalanço}
+          disabled={contasJaAdicionadasIds.length === 0}
+          className="px-8 py-3 bg-slate-800 text-white rounded-md hover:bg-slate-700 transition font-bold disabled:opacity-50 flex items-center justify-center min-w-[300px]"
         >
-          Salvar Dados e Visualizar o Balanço
+          Visualizar o Balanço Pronto &rarr;
         </button>
       </div>
     </div>

@@ -38,8 +38,76 @@ def get_contas_padrao():
         'id': c.id,
         'nome': c.nome,
         'grupo': c.grupo,
-        'subgrupo': c.subgrupo
+        'subgrupo': c.subgrupo,
+        'sinal': getattr(c, 'sinal', 'positivo')
     } for c in contas])
+
+@app.route('/api/contas', methods=['POST'])
+def add_conta_padrao():
+    data = request.json
+    nome = data.get('nome')
+    grupo = data.get('grupo')
+    subgrupo = data.get('subgrupo')
+    sinal = data.get('sinal', 'positivo')
+    
+    if not all([nome, grupo, subgrupo]):
+        return jsonify({'error': 'Parâmetros insuficientes'}), 400
+        
+    ultima_conta = ContaPadrao.query.order_by(ContaPadrao.ordem.desc()).first()
+    ordem = ultima_conta.ordem + 1 if ultima_conta else 1
+    
+    nova = ContaPadrao(nome=nome, grupo=grupo, subgrupo=subgrupo, ordem=ordem, sinal=sinal)
+    db.session.add(nova)
+    db.session.commit()
+    
+    return jsonify({
+        'id': nova.id,
+        'nome': nova.nome,
+        'grupo': nova.grupo,
+        'subgrupo': nova.subgrupo,
+        'sinal': nova.sinal
+    }), 201
+
+@app.route('/api/contas/<int:id>', methods=['PUT'])
+def edit_conta_padrao(id):
+    conta = ContaPadrao.query.get(id)
+    if not conta:
+        return jsonify({'error': 'Conta não encontrada'}), 404
+        
+    data = request.json
+    conta.nome = data.get('nome', conta.nome)
+    conta.grupo = data.get('grupo', conta.grupo)
+    conta.subgrupo = data.get('subgrupo', conta.subgrupo)
+    conta.sinal = data.get('sinal', getattr(conta, 'sinal', 'positivo'))
+    
+    db.session.commit()
+    
+    return jsonify({
+        'id': conta.id,
+        'nome': conta.nome,
+        'grupo': conta.grupo,
+        'subgrupo': conta.subgrupo,
+        'sinal': conta.sinal
+    }), 200
+
+@app.route('/api/contas/<int:id>', methods=['DELETE'])
+def delete_conta_padrao(id):
+    conta = ContaPadrao.query.get(id)
+    if not conta:
+        return jsonify({'error': 'Conta não encontrada'}), 404
+        
+    # Preservar o histórico desvinculando de Lançamentos antigos
+    from models import Lancamento
+    lancamentos = Lancamento.query.filter_by(conta_padrao_id=id).all()
+    for l in lancamentos:
+        l.nome_conta_personalizada = conta.nome
+        l.grupo_personalizado = conta.grupo
+        l.subgrupo_personalizado = conta.subgrupo
+        l.conta_padrao_id = None
+        
+    db.session.delete(conta)
+    db.session.commit()
+    return jsonify({'status': 'ok'}), 200
 
 @app.route('/api/lancamentos', methods=['GET'])
 def get_lancamentos():
@@ -95,9 +163,13 @@ def save_lancamentos():
         if not valor_str: continue
         valor = float(str(valor_str).replace(',', '.'))
         
-        # TRATAMENTO DE DEPRECIAÇÃO (Regra do Professor)
+        # TRATAMENTO DE CONTA REDUTORA (Sinal Negativo) E DEPRECIAÇÃO
         conta = ContaPadrao.query.get(conta_id)
-        if conta and "depreciação" in conta.nome.lower():
+        is_neg = False
+        if conta:
+            is_neg = getattr(conta, 'sinal', 'positivo') == 'negativo' or "depreciação" in conta.nome.lower()
+            
+        if is_neg:
             if valor > 0:
                 valor = valor * -1 # Força a ser negativo
         elif "depreciação" in str(conta_id).lower(): pass # Só pra prevenir

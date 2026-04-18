@@ -12,9 +12,10 @@ class Empresa(db.Model):
 class ContaPadrao(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     nome = db.Column(db.String(100), nullable=False)
-    grupo = db.Column(db.String(50), nullable=False) # e.g., 'Ativo', 'Passivo e PL'
-    subgrupo = db.Column(db.String(50), nullable=False) # e.g., 'Circulante', 'Não Circulante', 'Patrimônio Líquido'
+    grupo = db.Column(db.String(50), nullable=False) 
+    subgrupo = db.Column(db.String(50), nullable=False) 
     ordem = db.Column(db.Integer, default=0)
+    sinal = db.Column(db.String(10), default='positivo')
 
 class Lancamento(db.Model):
     id = db.Column(db.Integer, primary_key=True)
