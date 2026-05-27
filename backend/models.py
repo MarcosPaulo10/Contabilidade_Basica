@@ -16,6 +16,7 @@ class ContaPadrao(db.Model):
     subgrupo = db.Column(db.String(50), nullable=False) 
     ordem = db.Column(db.Integer, default=0)
     sinal = db.Column(db.String(10), default='positivo')
+    demonstrativo = db.Column(db.String(10), default='BP')
 
 class Lancamento(db.Model):
     id = db.Column(db.Integer, primary_key=True)

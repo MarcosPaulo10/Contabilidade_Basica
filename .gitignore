@@ -4,7 +4,6 @@ __pycache__/
 *$py.class
 .venv/
 venv/
-backend/banco.db
 backend/__pycache__/
 
 # Node / React

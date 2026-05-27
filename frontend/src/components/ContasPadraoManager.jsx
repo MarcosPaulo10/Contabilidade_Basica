@@ -43,7 +43,7 @@ export default function ContasPadraoManager({ onBack }) {
 
   const fetchContas = async () => {
     try {
-      const res = await axios.get(`${API_URL}/contas`)
+      const res = await axios.get(`${API_URL}/contas`, { params: { demonstrativo: 'BP' } })
       setContas(res.data)
     } catch (error) {
       console.error('Erro ao buscar contas:', error)
@@ -59,7 +59,7 @@ export default function ContasPadraoManager({ onBack }) {
         const res = await axios.put(`${API_URL}/contas/${editId}`, { nome, grupo, subgrupo, sinal })
         setContas(contas.map(c => c.id === editId ? res.data : c))
       } else {
-        const res = await axios.post(`${API_URL}/contas`, { nome, grupo, subgrupo, sinal })
+        const res = await axios.post(`${API_URL}/contas`, { nome, grupo, subgrupo, sinal, demonstrativo: 'BP' })
         setContas([...contas, res.data])
       }
       resetForm()

@@ -36,7 +36,8 @@ def seed_db():
                     nome=c["nome"],
                     grupo=c["grupo"],
                     subgrupo=c["subgrupo"],
-                    ordem=c["ordem"]
+                    ordem=c["ordem"],
+                    demonstrativo='BP',
                 )
                 db.session.add(nova_conta)
         db.session.commit()

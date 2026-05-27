@@ -14,7 +14,7 @@ export default function BalancoView({ empresa, periodo, onBack }) {
   const fetchLancamentos = async () => {
     try {
       const res = await axios.get(`${API_URL}/lancamentos`, {
-        params: { empresa_id: empresa.id, mes: periodo.mes, ano: periodo.ano }
+        params: { empresa_id: empresa.id, mes: periodo.mes, ano: periodo.ano, demonstrativo: 'BP' }
       })
       setLancamentos(res.data)
     } catch (error) {

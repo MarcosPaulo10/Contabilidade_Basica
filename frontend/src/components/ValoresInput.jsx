@@ -41,7 +41,7 @@ export default function ValoresInput({ empresa, onViewBalanco, onBack }) {
 
   const fetchContas = async () => {
     try {
-      const res = await axios.get(`${API_URL}/contas`)
+      const res = await axios.get(`${API_URL}/contas`, { params: { demonstrativo: 'BP' } })
       setContasPadrao(res.data)
     } catch (error) {
       console.error('Erro ao buscar contas:', error)
@@ -51,7 +51,7 @@ export default function ValoresInput({ empresa, onViewBalanco, onBack }) {
   const fetchLancamentos = async () => {
     try {
       const res = await axios.get(`${API_URL}/lancamentos`, {
-        params: { empresa_id: empresa.id, mes, ano }
+        params: { empresa_id: empresa.id, mes, ano, demonstrativo: 'BP' }
       })
       const preenchidos = {}
       res.data.forEach(l => {
@@ -108,7 +108,8 @@ export default function ValoresInput({ empresa, onViewBalanco, onBack }) {
         mes: parseInt(mes),
         ano: parseInt(ano),
         valores: dados_limpos,
-        novas_contas: [] 
+        novas_contas: [],
+        demonstrativo: 'BP',
       })
     } catch (error) {
       console.error('Erro no autosave:', error)
@@ -155,7 +156,8 @@ export default function ValoresInput({ empresa, onViewBalanco, onBack }) {
         await axios.post(`${API_URL}/lancamentos/limpar`, {
           empresa_id: empresa.id,
           mes: parseInt(mes),
-          ano: parseInt(ano)
+          ano: parseInt(ano),
+          demonstrativo: 'BP',
         })
         setLancamentos({})
       } catch (error) {
